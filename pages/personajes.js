@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './styles/otoindex.module.css';
 import { useRouter } from 'next/router';
+import { fetchWithCache } from './_app';
 
 export default function Personajes() {
   const [items, setItems] = useState([]);
@@ -11,14 +12,14 @@ export default function Personajes() {
     setLoading(true);
     const fetchData = async () => {
       try {
-        const url = 'https://api.jikan.moe/v4/top/characters?limit=25';
-        const res = await fetch(url);
-        const data = await res.json();
+        const data = await fetchWithCache('https://api.jikan.moe/v4/top/characters?limit=25');
         setItems(Array.isArray(data.data) && data.data.length ? data.data : []);
       } catch (error) {
+        console.error('Error loading characters:', error);
         setItems([]);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchData();
   }, []);

@@ -1,7 +1,25 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './styles/buscartusfav.module.css';
 import { useRouter } from 'next/router';
 import { getAgeRestriction } from '../lib/ageRestriction';
+import { fetchWithCache } from './_app';
+
+// Debounce hook para optimizar búsquedas
+const useDebounce = (value, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+    
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+  
+  return debouncedValue;
+};
 
 const typeInfo = {
   manga: { color: '#b71c1c', label: 'Manga', icon: '📚' },
@@ -21,9 +39,12 @@ export default function BuscarTUSFAV() {
   const [ageRestriction, setAgeRestriction] = useState(true);
   const tapeRef = useRef(null);
   const router = useRouter();
+  
+  // Debounce para la búsqueda
+  const debouncedQuery = useDebounce(query, 300);
 
   // Función para filtrar contenido erótico
-  const filterEroticContent = (items) => {
+  const filterEroticContent = useCallback((items) => {
     return (items || []).filter(item => {
       if (!item.genres) return true;
       // Si la restricción está activada (true), filtrar contenido adulto
@@ -33,50 +54,56 @@ export default function BuscarTUSFAV() {
       // Si la restricción está desactivada (false), mostrar todo
       return true;
     });
-  };
+  }, [ageRestriction]);
 
-  // Función para obtener datos de la API
-  const fetchApiData = async (endpoint) => {
+  // Función optimizada para obtener datos de la API
+  const fetchApiData = useCallback(async (endpoint) => {
     try {
-      const response = await fetch(endpoint);
-      const data = await response.json();
+      const data = await fetchWithCache(endpoint);
       return data.data || [];
     } catch (error) {
       console.error('Error fetching data:', error);
       return [];
     }
-  };
+  }, []);
 
-  // Función para cargar contenido popular inicial
-  const loadPopularContent = async () => {
-    const [mangaData, animeData, charData] = await Promise.all([
-      fetchApiData('https://api.jikan.moe/v4/top/manga?limit=8'),
-      fetchApiData('https://api.jikan.moe/v4/top/anime?limit=8'),
-      fetchApiData('https://api.jikan.moe/v4/top/characters?limit=8')
-    ]);
+  // Función optimizada para cargar contenido popular inicial
+  const loadPopularContent = useCallback(async () => {
+    try {
+      const [mangaData, animeData, charData] = await Promise.all([
+        fetchApiData('https://api.jikan.moe/v4/top/manga?limit=8'),
+        fetchApiData('https://api.jikan.moe/v4/top/anime?limit=8'),
+        fetchApiData('https://api.jikan.moe/v4/top/characters?limit=8')
+      ]);
 
-    const combinedItems = [
-      ...filterEroticContent(mangaData).map(i => ({ ...i, _type: 'manga' })),
-      ...filterEroticContent(animeData).map(i => ({ ...i, _type: 'anime' })),
-      ...charData.map(i => ({ ...i, _type: 'character' })),
-    ];
+      const combinedItems = [
+        ...filterEroticContent(mangaData).map(i => ({ ...i, _type: 'manga' })),
+        ...filterEroticContent(animeData).map(i => ({ ...i, _type: 'anime' })),
+        ...charData.map(i => ({ ...i, _type: 'character' })),
+      ];
 
-    setTapeItems(combinedItems);
-  };
+      setTapeItems(combinedItems);
+    } catch (error) {
+      console.error('Error loading popular content:', error);
+      setError('Error al cargar contenido popular');
+    }
+  }, [fetchApiData, filterEroticContent]);
 
-  // Función para buscar contenido
-  const searchContent = async (searchQuery) => {
-    if (!searchQuery) return;
+  // Función optimizada para buscar contenido
+  const searchContent = useCallback(async (searchQuery) => {
+    if (!searchQuery) {
+      setResults([]);
+      return;
+    }
     
     setLoading(true);
     setError('');
-    setResults([]);
 
     try {
       const [mangaData, animeData, charData] = await Promise.all([
-        fetchApiData(`https://api.jikan.moe/v4/manga?limit=10&q=${encodeURIComponent(searchQuery)}`),
-        fetchApiData(`https://api.jikan.moe/v4/anime?limit=10&q=${encodeURIComponent(searchQuery)}`),
-        fetchApiData(`https://api.jikan.moe/v4/characters?limit=10&q=${encodeURIComponent(searchQuery)}`)
+        fetchApiData(`https://api.jikan.moe/v4/manga?limit=8&q=${encodeURIComponent(searchQuery)}`),
+        fetchApiData(`https://api.jikan.moe/v4/anime?limit=8&q=${encodeURIComponent(searchQuery)}`),
+        fetchApiData(`https://api.jikan.moe/v4/characters?limit=8&q=${encodeURIComponent(searchQuery)}`)
       ]);
 
       const searchResults = [
@@ -87,11 +114,12 @@ export default function BuscarTUSFAV() {
 
       setResults(searchResults);
     } catch (error) {
+      console.error('Search error:', error);
       setError('Error al buscar. Intenta de nuevo.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [fetchApiData, filterEroticContent]);
 
   // Función para manejar navegación a detalles
   const handleItemClick = (item) => {
@@ -141,12 +169,12 @@ export default function BuscarTUSFAV() {
   // Efecto para cargar contenido popular inicial
   useEffect(() => {
     loadPopularContent();
-  }, [ageRestriction]);
+  }, [loadPopularContent, ageRestriction]);
 
-  // Efecto para búsqueda
+  // Efecto para búsqueda con debounce
   useEffect(() => {
-    searchContent(query);
-  }, [query, ageRestriction]);
+    searchContent(debouncedQuery);
+  }, [searchContent, debouncedQuery, ageRestriction]);
 
   // Efecto para auto-scroll
   useEffect(() => {

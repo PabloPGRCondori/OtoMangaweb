@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styles from './styles/detalle.module.css';
+import { fetchWithCache } from './_app';
 
 export default function Detalle() {
   const router = useRouter();
@@ -12,14 +13,19 @@ export default function Detalle() {
     if (!id || !type) return;
     setLoading(true);
     const fetchData = async () => {
-      let url =
-        type === 'manga'
-          ? `https://api.jikan.moe/v4/manga/${id}`
-          : `https://api.jikan.moe/v4/anime/${id}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      setItem(data.data);
-      setLoading(false);
+      try {
+        let url =
+          type === 'manga'
+            ? `https://api.jikan.moe/v4/manga/${id}`
+            : `https://api.jikan.moe/v4/anime/${id}`;
+        const data = await fetchWithCache(url);
+        setItem(data.data);
+      } catch (error) {
+        console.error('Error loading item:', error);
+        setItem(null);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
   }, [id, type]);

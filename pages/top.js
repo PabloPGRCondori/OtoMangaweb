@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styles from './styles/top.module.css';
 import tabsStyles from './styles/tabs.module.css';
 import { useRouter } from 'next/router';
+import { fetchWithCache } from './_app';
 
 const TYPE_OPTIONS = [
   { value: 'anime', label: 'Anime' },

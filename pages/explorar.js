@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styles from './styles/otoindex.module.css';
 import { useRouter } from 'next/router';
 import { getAgeRestriction } from '../lib/ageRestriction';
+import { fetchWithCache } from './_app';
 
 const TYPE_OPTIONS = [
   { value: 'anime', label: 'Anime' },

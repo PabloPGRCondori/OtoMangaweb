@@ -1,16 +1,13 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import styles from './styles/otoindex.module.css';
 import { useRouter } from 'next/router';
+import { fetchWithCache } from './_app';
 
 // Configuración para despliegue en AWS
 export const AWS_IP = '3.21.127.251';
-// Si necesitas usar la IP en fetch o para recursos, puedes hacer:
-// fetch(`http://${AWS_IP}:puerto/endpoint`)
-// O para recursos estáticos:
-// const STATIC_URL = `http://${AWS_IP}/ruta/archivo.png`;
 
 // Modularización de imágenes
-const BACKGROUND_IMAGE = '/fondo/bg.jpg'; // Usa si existe
+const BACKGROUND_IMAGE = '/fondo/bg.jpg';
 
 const CAROUSEL_IMAGES = [
   '/carrusel/carrusel1.jpg',
@@ -27,7 +24,9 @@ const CAROUSEL_IMAGES = [
 
 export default function OtoIndex() {
   const [animes, setAnimes] = useState([]);
+  const [mangas, setMangas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMangas, setLoadingMangas] = useState(true);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const router = useRouter();
   const intervalRef = useRef();
@@ -40,15 +39,33 @@ export default function OtoIndex() {
     return () => clearInterval(intervalRef.current);
   }, []);
 
-  // Cargar animes más vistos del año actual
-  useEffect(() => {
-    setLoading(true);
-    const year = new Date().getFullYear();
-    fetch(`https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=8&year=${year}`)
-      .then(res => res.json())
-      .then(data => setAnimes(Array.isArray(data.data) ? data.data : []))
-      .finally(() => setLoading(false));
+  // Función optimizada para cargar datos
+  const loadData = useCallback(async () => {
+    try {
+      const year = new Date().getFullYear();
+      
+      // Cargar animes y mangas en paralelo
+      const [animeData, mangaData] = await Promise.all([
+        fetchWithCache(`https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=8&year=${year}`),
+        fetchWithCache(`https://api.jikan.moe/v4/top/manga?filter=bypopularity&limit=8`)
+      ]);
+
+      setAnimes(Array.isArray(animeData.data) ? animeData.data : []);
+      setMangas(Array.isArray(mangaData.data) ? mangaData.data : []);
+    } catch (error) {
+      console.error('Error loading data:', error);
+      setAnimes([]);
+      setMangas([]);
+    } finally {
+      setLoading(false);
+      setLoadingMangas(false);
+    }
   }, []);
+
+  // Cargar datos al montar el componente
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   // Mostrar 3 imágenes a la vez, centrando la actual
   const getVisibleImages = () => {
@@ -111,20 +128,9 @@ export default function OtoIndex() {
   };
 
   // --- Carrusel de mangas más leídos ---
-  const [mangas, setMangas] = useState([]);
-  const [loadingMangas, setLoadingMangas] = useState(true);
   const mangaListRef = useRef();
   const [mangaScrollIndex, setMangaScrollIndex] = useState(0);
   const mangaVisibleCount = 4;
-
-  // Cargar mangas más leídos
-  useEffect(() => {
-    setLoadingMangas(true);
-    fetch('https://api.jikan.moe/v4/top/manga?filter=bypopularity&limit=8')
-      .then(res => res.json())
-      .then(data => setMangas(Array.isArray(data.data) ? data.data : []))
-      .finally(() => setLoadingMangas(false));
-  }, []);
 
   // Auto-scroll mangas
   useEffect(() => {

@@ -4,6 +4,7 @@ import styles from './styles/detalle.module.css';
 import tabsStyles from './styles/tabs.module.css';
 import useUser from '../lib/useUser';
 import { addFavorite, removeFavorite, isFavorite } from '../lib/favorites';
+import VideoPlayer from '../components/VideoPlayer';
 
 export default function Info() {
   const router = useRouter();
@@ -289,34 +290,18 @@ export default function Info() {
           {tab === 'videos' && (
             tabLoading ? <p>Cargando videos...</p> : (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, justifyContent: 'center', width: '100%' }}>
-                {videos.promo && videos.promo.length > 0 ? videos.promo.map((v, i) => (
-                  <div key={i} style={{ flex: '1 1 320px', maxWidth: 480, background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px #b71c1c22', padding: 18, border: '2px solid #eabf9f', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <b style={{ fontSize: 18 }}>{v.title}</b><br />
-                    {openVideo === i && v.trailer && v.trailer.embed_url ? (
-                      <div style={{ margin: '16px 0', width: '100%' }}>
-                        <iframe
-                          src={v.trailer.embed_url}
-                          title={v.title}
-                          width="100%"
-                          height="300"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          style={{ borderRadius: 12, border: '2px solid #eabf9f', background: '#000' }}
-                        />
-                      </div>
-                    ) : (
-                      <div style={{ margin: '16px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-                        {v.trailer && v.trailer.images && v.trailer.images.maximum ? (
-                          <img src={v.trailer.images.maximum} alt={v.title} style={{ width: '100%', maxHeight: 220, objectFit: 'cover', borderRadius: 10, marginBottom: 10, cursor: 'pointer', border: '2px solid #eabf9f', boxShadow: '0 2px 8px #b71c1c22' }} onClick={() => setOpenVideo(i)} />
-                        ) : (
-                          <button style={{ padding: '0.7rem 2rem', fontSize: 18, borderRadius: 10, background: '#eabf9f', color: '#b71c1c', border: 'none', cursor: 'pointer', fontWeight: 700 }} onClick={() => setOpenVideo(i)}>
-                            Ver video
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )) : <p>No hay videos promocionales.</p>}
+                {videos.promo && videos.promo.length > 0 ? 
+                  videos.promo.map((video, index) => (
+                    <VideoPlayer 
+                      key={index}
+                      video={video}
+                      index={index}
+                      openVideo={openVideo}
+                      setOpenVideo={setOpenVideo}
+                    />
+                  ))
+                  : <p>No hay videos promocionales.</p>
+                }
               </div>
             )
           )}

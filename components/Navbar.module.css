@@ -1,0 +1,173 @@
+.navbar {
+  background: linear-gradient(90deg, #b71c1c 0%, #eabf9f 100%);
+  padding: 1.2rem 0;
+  border-bottom: 4px solid #eabf9f;
+  box-shadow: 0 2px 12px rgba(183,28,28,0.08);
+  font-family: 'Noto Sans JP', 'Noto Serif JP', 'Yu Mincho', serif;
+}
+.navContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+.left {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.center {
+  flex: 2 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+}
+.right {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.2rem;
+}
+.navbar ul {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+.navbar li a {
+  color: #fff6e9;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  padding: 0.3rem 1.2rem;
+  border-radius: 18px;
+  transition: background 0.2s, color 0.2s;
+  font-family: 'Noto Serif JP', 'Yu Mincho', serif;
+}
+.navbar li a:hover {
+  background: #fff6e9;
+  color: #b71c1c;
+}
+.cartBadge {
+  background: #b71c1c;
+  color: #fff6e9;
+  border-radius: 50%;
+  padding: 0.1em 0.6em;
+  font-size: 0.95em;
+  margin-left: 0.4em;
+  font-weight: bold;
+  vertical-align: middle;
+  box-shadow: 0 1px 4px rgba(183,28,28,0.13);
+}
+.activeLink {
+  background: #fff6e9;
+  color: #b71c1c !important;
+  border-radius: 18px;
+  padding: 0.3rem 1.2rem;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  vertical-align: middle;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #eabf9f;
+  border-radius: 24px;
+  transition: background 0.3s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s, background 0.3s;
+  box-shadow: 0 2px 6px #b71c1c22;
+}
+input:checked + .slider {
+  background: #b71c1c;
+}
+input:checked + .slider:before {
+  transform: translateX(20px);
+  background: #fff6e9;
+}
+.logoImg {
+  max-width: 140px;
+  height: 48px;
+  object-fit: contain;
+  margin-left: 1rem;
+  margin-right: 2.5rem;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  transition: transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s;
+  will-change: transform, box-shadow;
+  display: block;
+}
+.logoImg:hover {
+  transform: translateY(-10px) scale(1.08);
+  box-shadow: 0 12px 32px #b71c1c44, 0 2px 8px #b71c1c22;
+  z-index: 10;
+}
+.logoBtn {
+  background: linear-gradient(90deg, #fff6e9 60%, #eabf9f 100%);
+  color: #b71c1c;
+  font-size: 1.6rem;
+  font-weight: 900;
+  border: none;
+  border-radius: 16px;
+  padding: 0.5rem 2.2rem;
+  box-shadow: 0 2px 8px #b71c1c22;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  transition: transform 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s, background 0.22s;
+  outline: none;
+  margin-right: 2.5rem;
+}
+.logoBtn:hover, .logoBtn:focus {
+  transform: translateY(-7px) scale(1.06);
+  box-shadow: 0 12px 32px #b71c1c44, 0 2px 8px #b71c1c22;
+  background: linear-gradient(90deg, #ffe3c2 60%, #eabf9f 100%);
+}
+.navBtn {
+  background: linear-gradient(90deg, #fff6e9 60%, #eabf9f 100%);
+  color: #b71c1c;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  padding: 0.4rem 1.5rem;
+  margin: 0 0.2rem;
+  box-shadow: 0 2px 8px #b71c1c11;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s, background 0.18s;
+  outline: none;
+  display: inline-block;
+}
+.navBtn:hover, .navBtn:focus {
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 8px 24px #b71c1c22, 0 2px 8px #b71c1c11;
+  background: linear-gradient(90deg, #ffe3c2 60%, #eabf9f 100%);
+}

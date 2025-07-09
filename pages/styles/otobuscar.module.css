@@ -1,0 +1,88 @@
+.main {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fbeee6 0%, #f5d6c6 100%);
+  border-radius: 18px;
+  margin: 2rem auto;
+  max-width: 700px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  border: 3px solid #eabf9f;
+  font-family: 'Noto Sans JP', 'Noto Serif JP', 'Yu Mincho', serif;
+}
+.title {
+  font-size: 2.5rem;
+  color: #b71c1c;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  font-family: 'Noto Serif JP', 'Yu Mincho', serif;
+  text-shadow: 2px 2px 0 #fff6e9, 0 0 8px #eabf9f;
+}
+.subtitle {
+  font-size: 1.2rem;
+  color: #7c4700;
+  margin-bottom: 1.5rem;
+  font-family: 'Noto Sans JP', 'Yu Mincho', serif;
+}
+.cardsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 2rem;
+  overflow-x: auto;
+  justify-content: flex-start;
+  margin-top: 2rem;
+  padding-bottom: 1rem;
+  width: 100%;
+  max-width: 900px;
+}
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 220px;
+  min-width: 220px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+.card:hover {
+  transform: translateY(-5px) scale(1.03);
+}
+.card img {
+  width: 150px;
+  height: 210px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.card h3, .card p {
+  font-weight: bold;
+}
+.card p {
+  font-size: 0.95rem;
+  color: #555;
+  text-align: center;
+}
+.card button {
+  margin-top: 0.7rem;
+  background: #b71c1c;
+  color: #fff6e9;
+  border: none;
+  border-radius: 16px;
+  padding: 0.4rem 1.2rem;
+  font-size: 1rem;
+  font-family: 'Noto Sans JP', 'Noto Serif JP', 'Yu Mincho', serif;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(183,28,28,0.08);
+}
+.card button:hover {
+  background: #eabf9f;
+  color: #b71c1c;
+}

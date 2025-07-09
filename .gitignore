@@ -1,0 +1,67 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Node dependencies
+/node_modules
+
+# Yarn, pnpm, npm, and lock files
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Testing
+/coverage
+
+# Next.js build output
+/.next/
+/out/
+
+# Production build
+/build
+
+# Miscellaneous
+.DS_Store
+*.pem
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment variables
+.env*
+
+# Vercel deployment
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Local settings
+.vscode/
+.idea/
+*.swp
+
+# OS generated
+Thumbs.db
+Desktop.ini
+
+# AWS credentials (if you use them locally)
+.aws/
+
+# Firebase local emulators
+.firebase/
+
+# Ignore images and files only if not in public/
+!public/
+
+# Ignore local backups
+*.bak
+*.tmp

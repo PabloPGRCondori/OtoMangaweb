@@ -1,0 +1,113 @@
+/* Estilos para la página BuscarTUSFAV */
+.main {
+  max-width: 1200px;
+  margin: 2rem auto;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  border: 3px solid #eabf9f;
+  background: linear-gradient(135deg, #fbeee6 0%, #f5d6c6 100%);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  color: #b71c1c;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.subtitle {
+  color: #7c4700;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  width: 100%;
+  max-width: 1100px;
+  min-height: 320px;
+  margin: 0 auto;
+  gap: 0;
+}
+
+.card {
+  min-width: 260px;
+  margin-right: 32px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  padding: 1rem 1rem 0.7rem 1rem;
+  cursor: pointer;
+  border: 2px solid #b71c1c;
+  animation: fadeIn 0.5s both;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.cardIconRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.cardIcon {
+  font-size: 28px;
+}
+
+.cardLabel {
+  background: #b71c1c;
+  color: #fff;
+  border-radius: 12px;
+  padding: 0.2rem 0.8rem;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.cardImg {
+  border-radius: 8px;
+  margin-bottom: 8px;
+  width: 150px;
+  height: 210px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.cardTitle {
+  margin: 0.5rem 0 0.2rem 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #b71c1c;
+  text-align: center;
+}
+
+.cardKanji {
+  color: #555;
+  font-size: 14px;
+}
+
+.cardSynopsis {
+  color: #7c4700;
+  font-size: 13px;
+  margin: 0.3rem 0 0 0;
+  max-height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: none; }
+}

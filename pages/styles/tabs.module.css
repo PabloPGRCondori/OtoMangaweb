@@ -1,0 +1,34 @@
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+.tabBtn {
+  background: #fff6e9;
+  color: #b71c1c;
+  border: 2px solid #eabf9f;
+  border-radius: 12px 12px 0 0;
+  padding: 0.5rem 1.2rem;
+  font-size: 1.08rem;
+  font-family: 'Noto Sans JP', 'Noto Serif JP', 'Yu Mincho', serif;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+}
+.tabBtn.active, .tabBtn:focus {
+  background: #b71c1c;
+  color: #fff6e9;
+  border-bottom: 2px solid #fff6e9;
+  z-index: 2;
+}
+.tabPanel {
+  width: 100%;
+  max-width: 650px;
+  background: #fff6e9;
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 2px 12px rgba(183,28,28,0.06);
+  padding: 1.5rem 1.2rem;
+  margin-bottom: 1.5rem;
+  min-height: 120px;
+}

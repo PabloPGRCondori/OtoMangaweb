@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import styles from './styles/otoindex.module.css';
 import { useRouter } from 'next/router';
 import { getAgeRestriction } from '../lib/ageRestriction';
@@ -34,7 +34,7 @@ export default function Explorar() {
   const router = useRouter();
 
   // IDs de géneros eróticos (Jikan): hentai, erotica, ecchi, yaoi, yuri
-  const forbiddenGenres = [12, 49, 9, 28, 27];
+  const forbiddenGenres = useMemo(() => [12, 49, 9, 28, 27], []);
   const [ageRestriction, setAgeRestriction] = useState(true);
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export default function Explorar() {
       })
       .catch(() => setError('Error al buscar.'))
       .finally(() => setLoading(false));
-  }, [query, type, order, subtype, year, page, ageRestriction]);
+  }, [query, type, order, subtype, year, page, ageRestriction, forbiddenGenres]);
 
   const handleSearch = (e) => {
     e.preventDefault();

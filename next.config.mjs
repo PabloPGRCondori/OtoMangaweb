@@ -1,6 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  
+  // Configuración de ESLint para reducir warnings
+  eslint: {
+    ignoreDuringBuilds: false,
+    dirs: ['pages', 'components', 'lib']
+  },
+  
+  // Configuración de imágenes externas
+  images: {
+    domains: ['cdn.myanimelist.net', 'example.com'],
+    unoptimized: false,
+  },
+  
   async headers() {
     return [
       {

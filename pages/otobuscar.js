@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import styles from './styles/otobuscar.module.css';
 import { useRouter } from 'next/router';
 import { getAgeRestriction } from '../lib/ageRestriction';
@@ -15,7 +15,7 @@ export default function OtoBuscar() {
   const router = useRouter();
 
   // IDs de géneros eróticos (Jikan): hentai, erotica, ecchi, yaoi, yuri
-  const forbiddenGenres = [12, 49, 9, 28, 27];
+  const forbiddenGenres = useMemo(() => [12, 49, 9, 28, 27], []);
   const [ageRestriction, setAgeRestriction] = useState(true);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function OtoBuscar() {
       }
     };
     fetchTape();
-  }, [ageRestriction]);
+  }, [ageRestriction, forbiddenGenres]);
 
   // Efecto para mover la cinta automáticamente
   useEffect(() => {
@@ -76,7 +76,7 @@ export default function OtoBuscar() {
     }, 50);
     setTapeInterval(interval);
     return () => clearInterval(interval);
-  }, [results, tapeItems, tapeSpeed]);
+  }, [results, tapeItems, tapeSpeed, tapeInterval]);
 
   // Buscar solo por palabra clave
   const handleSearch = async (e) => {
@@ -143,7 +143,7 @@ export default function OtoBuscar() {
       setLoading(false);
     };
     fetchOnType();
-  }, [query, ageRestriction]);
+  }, [query, ageRestriction, forbiddenGenres]);
 
   return (
     <main className={styles.main} style={{ maxWidth: 1200, margin: '2rem auto', borderRadius: 18, boxShadow: '0 4px 24px rgba(0,0,0,0.08)', border: '3px solid #eabf9f', background: 'linear-gradient(135deg, #fbeee6 0%, #f5d6c6 100%)' }}>
